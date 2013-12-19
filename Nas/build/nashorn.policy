@@ -1,0 +1,30 @@
+
+
+grant codeBase "file:/home/buddhi/IdeaProjects/Nas/build/nashorn-internal-tests.jar" {
+    permission java.security.AllPermission;
+};
+
+grant codeBase "file:/home/buddhi/IdeaProjects/Nas/test/lib/testng.jar" {
+    permission java.security.AllPermission;
+};
+
+grant codeBase "file:/home/buddhi/IdeaProjects/Nas/test/script/trusted/*" {
+    permission java.security.AllPermission;
+};
+
+grant codeBase "file:/home/buddhi/IdeaProjects/Nas/test/script/basic/*" {
+    permission java.io.FilePermission "/home/buddhi/IdeaProjects/Nas/test/script/-", "read";
+    permission java.io.FilePermission "${user.dir}", "read";
+    permission java.util.PropertyPermission "user.dir", "read";
+    permission java.util.PropertyPermission "nashorn.test.*", "read";
+};
+
+grant codeBase "file:/home/buddhi/IdeaProjects/Nas/test/script/basic/JDK-8010946-privileged.js" {
+    permission java.util.PropertyPermission "java.security.policy", "read";
+};
+
+grant codeBase "file:/home/buddhi/IdeaProjects/Nas/test/script/basic/classloader.js" {
+    permission java.lang.RuntimePermission "nashorn.JavaReflection";
+};
+
+    
