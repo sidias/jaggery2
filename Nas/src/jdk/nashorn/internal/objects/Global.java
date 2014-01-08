@@ -187,10 +187,6 @@ public final class Global extends ScriptObject implements GlobalObject, Scope {
     @Property(name = "JSON", attributes = Attribute.NOT_ENUMERABLE)
     public volatile Object json;
 
-    //---------------------------------------------------------------------
-    @Property(name = "Pro", attributes = Attribute.NOT_ENUMERABLE)
-    public volatile Object pro;
-
     /** Nashorn extension: global.JSAdapter */
     @Property(name = "JSAdapter", attributes = Attribute.NOT_ENUMERABLE)
     public volatile Object jsadapter;
@@ -335,8 +331,6 @@ public final class Global extends ScriptObject implements GlobalObject, Scope {
     private ScriptFunction builtinBoolean;
     private ScriptFunction builtinDate;
     private ScriptObject   builtinJSON;
-    ///-------------
-    private ScriptObject   builtinPro;
     private ScriptFunction builtinJSAdapter;
     private ScriptObject   builtinMath;
     private ScriptFunction builtinNumber;
@@ -872,7 +866,8 @@ public final class Global extends ScriptObject implements GlobalObject, Scope {
         return ScriptFunction.getPrototype(builtinArray);
     }
 
-    ScriptObject getBooleanPrototype() {
+    //change by me
+    public ScriptObject getBooleanPrototype() {
         return ScriptFunction.getPrototype(builtinBoolean);
     }
 
@@ -997,7 +992,8 @@ public final class Global extends ScriptObject implements GlobalObject, Scope {
         return nativeArrayBufferMap;
     }
 
-    PropertyMap getBooleanMap() {
+    //change here by me
+    public PropertyMap getBooleanMap() {
         return nativeBooleanMap;
     }
 
@@ -1187,11 +1183,6 @@ public final class Global extends ScriptObject implements GlobalObject, Scope {
         return builtinJSON;
     }
 
-    //--------------------------------------------
-    private ScriptObject getBuiltinProcess(){
-        return builtinPro;
-    }
-
     /**
      * Called from compiled script code to test if builtin has been overridden
      *
@@ -1200,12 +1191,6 @@ public final class Global extends ScriptObject implements GlobalObject, Scope {
     public static boolean isBuiltinJSON() {
         final Global instance = Global.instance();
         return instance.json == instance.getBuiltinJSON();
-    }
-
-    //-----------------------------------------------
-    public static boolean isBuiltinProcess(){
-        final Global instance = Global.instance();
-        return instance.pro == instance.getBuiltinProcess();
     }
 
     private ScriptObject getBuiltinJava() {
@@ -1640,8 +1625,6 @@ public final class Global extends ScriptObject implements GlobalObject, Scope {
         this.builtinBoolean   = (ScriptFunction)initConstructor("Boolean");
         this.builtinDate      = (ScriptFunction)initConstructor("Date");
         this.builtinJSON      = initConstructor("JSON");
-//-------------------------------
-        this.builtinPro        =  initConstructor("Pro");        //cannot instantiate with new keyword
         this.builtinJSAdapter = (ScriptFunction)initConstructor("JSAdapter");
         this.builtinMath      = initConstructor("Math");
         this.builtinNumber    = (ScriptFunction)initConstructor("Number");
@@ -1834,8 +1817,6 @@ public final class Global extends ScriptObject implements GlobalObject, Scope {
         this.function          = this.builtinFunction;
         this.jsadapter         = this.builtinJSAdapter;
         this.json              = this.builtinJSON;
-        //----------------------
-        this.pro               = this.builtinPro;
         this.com               = this.builtinCom;
         this.edu               = this.builtinEdu;
         this.java              = this.builtinJava;
@@ -1857,7 +1838,7 @@ public final class Global extends ScriptObject implements GlobalObject, Scope {
         this.uriError          = this.builtinURIError;
         this.arrayBuffer       = this.builtinArrayBuffer;
         this.int8Array         = this.builtinInt8Array;
-        this.int8Array        = this.builtinUint8Array;
+        this.int8Array        =  this.builtinUint8Array;
         this.uint8ClampedArray = this.builtinUint8ClampedArray;
         this.int16Array        = this.builtinInt16Array;
         this.uint16Array       = this.builtinUint16Array;
@@ -1910,8 +1891,6 @@ public final class Global extends ScriptObject implements GlobalObject, Scope {
             sb.append("$Constructor");
 
             final Class<?>     funcClass = Class.forName(sb.toString());
-            String s = funcClass.getCanonicalName();
-
             final ScriptObject res       = (ScriptObject)funcClass.newInstance();
 
             if (res instanceof ScriptFunction) {
@@ -1940,7 +1919,6 @@ public final class Global extends ScriptObject implements GlobalObject, Scope {
         this.nativeArrayMap = NativeArray.getInitialMap().duplicate();
         this.nativeBooleanMap = NativeBoolean.getInitialMap().duplicate();
         this.nativeDateMap = NativeDate.getInitialMap().duplicate();
-      //----------------------delete
         this.nativeErrorMap = NativeError.getInitialMap().duplicate();
         this.nativeEvalErrorMap = NativeEvalError.getInitialMap().duplicate();
         this.nativeJSAdapterMap = NativeJSAdapter.getInitialMap().duplicate();

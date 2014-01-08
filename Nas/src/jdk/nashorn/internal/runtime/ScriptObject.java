@@ -156,7 +156,6 @@ public abstract class ScriptObject extends PropertyListenerManager implements Pr
      * Constructor
      */
     public ScriptObject() {
-
         this(null);
     }
 
@@ -402,6 +401,8 @@ public abstract class ScriptObject extends PropertyListenerManager implements Pr
      * of this object, or undefined if absent.
      */
     public Object getPropertyDescriptor(final String key) {
+
+        System.out.print("getproperty method invoke in scriptobject class");
         final Object res = getOwnPropertyDescriptor(key);
 
         if (res != UNDEFINED) {

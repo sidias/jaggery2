@@ -25,14 +25,19 @@
 
 //
 
-package Dilan;
+package Dilan.src;
 
 //we must set a prototype to this function
+//these classes cannot inherite from scriptObjectMirror class (no default constructror, constructor is pack private)
 
 import jdk.nashorn.api.scripting.JSObject;
 import jdk.nashorn.api.scripting.NashornException;
+import jdk.nashorn.internal.objects.PrototypeObject;
 import jdk.nashorn.internal.runtime.*;
 import jdk.nashorn.internal.runtime.options.Options;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 import static jdk.nashorn.internal.runtime.ScriptRuntime.UNDEFINED;
 
@@ -41,7 +46,6 @@ public final class ContextifyImpl {
 
     public Object getMethod(final String method){
         Object methodObject = null;
-
         switch (method){
             case "isContext":
                 methodObject =  new IsContext();
@@ -58,9 +62,10 @@ public final class ContextifyImpl {
     }
 
 
-    private static final class MakeContext extends JSObject{
+    private static final class MakeContext extends JSObject {
 
         private static PropertyMap maps$;
+        private static String CLASSNAME = "MakeContext";
 
         static PropertyMap getInitialMap() {
             return maps$;
@@ -68,6 +73,7 @@ public final class ContextifyImpl {
 
         @Override
         public Object call(String s, Object... objects) {
+            //throw ecma error
             return UNDEFINED;
         }
 

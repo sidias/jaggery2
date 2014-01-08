@@ -105,7 +105,10 @@ public class ScriptFunctionImpl extends ScriptFunction {
      * @param map initial property map
      * @param specs specialized versions of this method, if available, null otherwise
      */
-    ScriptFunctionImpl(final String name, final MethodHandle invokeHandle, final PropertyMap map, final MethodHandle[] specs) {
+
+
+    //set public me
+    public ScriptFunctionImpl(final String name, final MethodHandle invokeHandle, final PropertyMap map, final MethodHandle[] specs) {
         this(name, invokeHandle, map, specs, Global.instance());
     }
 
@@ -236,7 +239,9 @@ public class ScriptFunctionImpl extends ScriptFunction {
      * @param specs  specialized versions of function if available, null otherwise
      * @return new ScriptFunction
      */
-    static ScriptFunction makeFunction(final String name, final MethodHandle methodHandle, final MethodHandle[] specs) {
+
+    //change nothing to public by me
+    public static ScriptFunction makeFunction(final String name, final MethodHandle methodHandle, final MethodHandle[] specs) {
         final ScriptFunctionImpl func = new ScriptFunctionImpl(name, methodHandle, null, specs, false, true, false);
         func.setPrototype(UNDEFINED);
         // Non-constructor built-in functions do not have "prototype" property
@@ -252,7 +257,9 @@ public class ScriptFunctionImpl extends ScriptFunction {
      * @param methodHandle handle for invocation
      * @return new ScriptFunction
      */
-    static ScriptFunction makeFunction(final String name, final MethodHandle methodHandle) {
+
+    //convery no modfier to public by me
+    public static ScriptFunction makeFunction(final String name, final MethodHandle methodHandle) {
         return makeFunction(name, methodHandle, null);
     }
 

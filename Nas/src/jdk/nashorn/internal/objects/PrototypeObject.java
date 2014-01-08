@@ -75,7 +75,10 @@ public class PrototypeObject extends ScriptObject {
      *
      * @param map property map
      */
-    PrototypeObject(final PropertyMap map) {
+
+
+    //set no modifier to public me
+    public PrototypeObject(final PropertyMap map) {
         this(Global.instance(), map);
     }
 
@@ -89,7 +92,9 @@ public class PrototypeObject extends ScriptObject {
      * @param self self reference
      * @return constructor, probably, but not necessarily, a {@link ScriptFunction}
      */
-    static Object getConstructor(final Object self) {
+
+    //set no modifier to public me
+    public static Object getConstructor(final Object self) {
         return (self instanceof PrototypeObject) ?
             ((PrototypeObject)self).getConstructor() :
             UNDEFINED;
@@ -100,7 +105,9 @@ public class PrototypeObject extends ScriptObject {
      * @param self self reference
      * @param constructor constructor, probably, but not necessarily, a {@link ScriptFunction}
      */
-    static void setConstructor(final Object self, final Object constructor) {
+
+    //set nothing to public by me
+    public static void setConstructor(final Object self, final Object constructor) {
         if (self instanceof PrototypeObject) {
             ((PrototypeObject)self).setConstructor(constructor);
         }
@@ -110,7 +117,8 @@ public class PrototypeObject extends ScriptObject {
         return constructor;
     }
 
-    private void setConstructor(final Object constructor) {
+    //set private public me
+    public void setConstructor(final Object constructor) {
         this.constructor = constructor;
     }
 
