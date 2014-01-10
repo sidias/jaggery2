@@ -5,7 +5,7 @@
     <ignored path="Nas.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/NativePro.java" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1387471661940" ignored="false" />
-    <file path="/a.dummy" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1389174993070" ignored="false" />
+    <file path="/a.dummy" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1389257280060" ignored="false" />
     <file path="$PROJECT_DIR$/../Jaggery2/src/jaggery.js" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1384775985070" ignored="false" />
     <file path="$PROJECT_DIR$/../Jaggery2/lib/vm.js" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1384926387331" ignored="false" />
     <file path="/vm.js" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1385020517227" ignored="false" />
@@ -49,8 +49,8 @@
     <file path="/Context.java" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1386738343452" ignored="false" />
     <file path="/LoadNatives.java" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1388747240382" ignored="false" />
     <file path="/ReadSource.java" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1388984513090" ignored="false" />
-    <file path="$PROJECT_DIR$/../Jaggery2.0/src/Jaggery2.js" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1388737370217" ignored="false" />
-    <file path="/Jaggery2.js" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1388736405098" ignored="false" />
+    <file path="$PROJECT_DIR$/../Jaggery2.0/src/Jaggery2.js" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1389260542341" ignored="false" />
+    <file path="/Jaggery2.js" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1389260538645" ignored="false" />
     <file path="/GlobalFunctions.java" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1387271260833" ignored="false" />
     <file path="$PROJECT_DIR$/../Jaggery2.0/libs/path.js" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1387386344217" ignored="false" />
     <file path="/path.js" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1388724686667" ignored="false" />
@@ -59,7 +59,7 @@
     <file path="/BindImpls.java" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1387534231107" ignored="false" />
     <file path="/GlobalObject.java" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1387650185838" ignored="false" />
     <file path="/ECMAErrors.java" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1387908680823" ignored="false" />
-    <file path="$PROJECT_DIR$/../NodeSource/lib/module.js" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1388724334900" ignored="false" />
+    <file path="$PROJECT_DIR$/../NodeSource/lib/module.js" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1389266595976" ignored="false" />
     <file path="$PROJECT_DIR$/../NodeSource/lib/path.js" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1388724932420" ignored="false" />
     <file path="/ContextifyProperty.java" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1389068930723" ignored="false" />
     <file path="/NasAccess.java" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1389072723565" ignored="false" />
@@ -68,10 +68,12 @@
     <file path="/Jaggery.java" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1389174522011" ignored="false" />
     <file path="/NativeMath.java" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1389158374009" ignored="false" />
     <file path="/JaggeryNatives.java" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1389176133477" ignored="false" />
-    <file path="/JaggeryContextify.java" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1389176652310" ignored="false" />
-    <file path="/JaggeryContextifyScriptImpl.java" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1389165334047" ignored="false" />
+    <file path="/JaggeryContextify.java" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1389241801068" ignored="false" />
+    <file path="/JaggeryContextifyScriptImpl.java" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1389187633648" ignored="false" />
     <file path="/ErrorManager.java" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1389160959731" ignored="false" />
     <file path="/Jag.java" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1389175698719" ignored="false" />
+    <file path="/JagObj.java" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1389329273364" ignored="false" />
+    <file path="/module.js" changelist="8d14e852-50f3-479b-ae82-e40b9caa3196" time="1389266595976" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -138,37 +140,48 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Jaggery2.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/Dilan/Jaggery2.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="112" column="0" selection-start="3654" selection-end="3654" vertical-scroll-proportion="0.33333334">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="JaggeryContextify.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Dilan/JaggeryContextify.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="45" column="43" selection-start="1611" selection-end="1611" vertical-scroll-proportion="0.0">
+            <state line="54" column="25" selection-start="1886" selection-end="1886" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Shell.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/jdk/nashorn/tools/Shell.java">
+      <file leaf-file-name="Jaggery2.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Dilan/Jaggery2.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="155" column="8" selection-start="5398" selection-end="5398" vertical-scroll-proportion="0.0">
+            <state line="67" column="79" selection-start="2202" selection-end="2202" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Jaggery.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Dilan/Jaggery.java">
+      <file leaf-file-name="JaggeryObj.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/Dilan/JaggeryObj.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="7" selection-start="595" selection-end="595" vertical-scroll-proportion="0.0">
+            <state line="109" column="69" selection-start="3459" selection-end="3459" vertical-scroll-proportion="2.338403">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Attribute.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/jdk/nashorn/internal/objects/annotations/Attribute.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="32" column="17" selection-start="1438" selection-end="1438" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Where.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/jdk/nashorn/internal/objects/annotations/Where.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="30" column="12" selection-start="1339" selection-end="1339" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -184,22 +197,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/Dilan/BindImpl.java" />
-        <option value="$PROJECT_DIR$/src/Dilan/src/BindImpl.java" />
         <option value="$PROJECT_DIR$/src/Dilan/JaggeryBinding.java" />
         <option value="$PROJECT_DIR$/src/Dilan/NativeMath.java" />
         <option value="$PROJECT_DIR$/src/Dilan/JaggeryMath.java" />
         <option value="$PROJECT_DIR$/src/jdk/nashorn/internal/objects/ScriptFunctionImpl.java" />
         <option value="$PROJECT_DIR$/src/jdk/nashorn/internal/objects/NativeMath.java" />
         <option value="$PROJECT_DIR$/src/jdk/nashorn/internal/runtime/ErrorManager.java" />
-        <option value="$PROJECT_DIR$/src/Dilan/JaggeryContextifyScriptImpl.java" />
-        <option value="$PROJECT_DIR$/src/Dilan/Jaggery.java" />
-        <option value="$PROJECT_DIR$/src/jdk/nashorn/tools/Shell.java" />
         <option value="$PROJECT_DIR$/src/Dilan/Jag.java" />
         <option value="$PROJECT_DIR$/src/Dilan/JaggeryNatives.java" />
-        <option value="$PROJECT_DIR$/src/Dilan/JaggeryContextify.java" />
         <option value="$PROJECT_DIR$/src/jdk/nashorn/internal/runtime/ScriptObject.java" />
+        <option value="$PROJECT_DIR$/src/jdk/nashorn/tools/Shell.java" />
+        <option value="$PROJECT_DIR$/src/Dilan/JaggeryContextify.java" />
+        <option value="$PROJECT_DIR$/src/Dilan/JaggeryContextifyScriptImpl.java" />
+        <option value="$PROJECT_DIR$/src/Dilan/Jaggery.java" />
+        <option value="$PROJECT_DIR$/src/Dilan/JagObj.java" />
         <option value="$PROJECT_DIR$/src/Dilan/Jaggery2.java" />
+        <option value="$PROJECT_DIR$/src/Dilan/JaggeryObj.java" />
       </list>
     </option>
   </component>
@@ -208,9 +221,9 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="64" />
-    <option name="y" value="24" />
+    <option name="y" value="-4" />
     <option name="width" value="1303" />
-    <option name="height" value="745" />
+    <option name="height" value="773" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -739,27 +752,27 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="64" y="24" width="1303" height="745" extended-state="7" />
+    <frame x="64" y="-4" width="1303" height="773" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.009561753" sideWeight="0.86767167" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.00876494" sideWeight="0.8803828" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5808" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1323283" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.119617224" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24940239" sideWeight="0.8564593" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32988048" sideWeight="0.8676236" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24860558" sideWeight="0.86767167" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24780877" sideWeight="0.8803828" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3296" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.80701756" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.6096" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -944,74 +957,9 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/jdk/nashorn/internal/objects/NativeBoolean.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="155" column="71" selection-start="4948" selection-end="4997" vertical-scroll-proportion="0.39115646">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/jdk/nashorn/internal/runtime/ECMAException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="44" column="19" selection-start="2117" selection-end="2117" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/jdk/nashorn/internal/runtime/ErrorManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="13" selection-start="1451" selection-end="1451" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/jdk/nashorn/internal/runtime/ECMAErrors.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="95" selection-start="1641" selection-end="1688" vertical-scroll-proportion="-6.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/jdk/nashorn/internal/objects/Global.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="79" column="24" selection-start="3585" selection-end="3585" vertical-scroll-proportion="-2.8368795">
-          <folding>
-            <element signature="e#0#73853#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/jdk/nashorn/internal/objects/NativeMath.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="79" column="93" selection-start="3481" selection-end="3717" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///usr/lib/jvm/java-8-oracle/jre/lib/ext/nashorn.jar!/jdk/nashorn/internal/runtime/ECMAErrors.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="61" selection-start="1926" selection-end="1926" vertical-scroll-proportion="0.31756756" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Dilan/src/ContextifyImpl.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="180" column="64" selection-start="5749" selection-end="5749" vertical-scroll-proportion="-2.5815604">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Dilan/JaggeryContextifyScriptImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="19" selection-start="592" selection-end="592" vertical-scroll-proportion="-1.9321663">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build/classes/jdk/nashorn/api/scripting/resources/Messages.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="37" selection-start="1465" selection-end="1465" vertical-scroll-proportion="0.69883525">
           <folding />
         </state>
       </provider>
@@ -1030,31 +978,92 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Dilan/Jaggery.java">
+    <entry file="file://$PROJECT_DIR$/src/jdk/nashorn/tools/Shell.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="7" selection-start="595" selection-end="595" vertical-scroll-proportion="0.0">
+        <state line="26" column="0" selection-start="1241" selection-end="1241" vertical-scroll-proportion="-10.382232">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/jdk/nashorn/tools/Shell.java">
+    <entry file="file://$PROJECT_DIR$/src/jdk/nashorn/internal/objects/Global.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="155" column="8" selection-start="5398" selection-end="5398" vertical-scroll-proportion="0.0">
+        <state line="710" column="8" selection-start="26448" selection-end="26448" vertical-scroll-proportion="0.030991735">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Dilan/JaggeryContextifyScriptImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="48" column="79" selection-start="1363" selection-end="1363" vertical-scroll-proportion="1.3740458">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Dilan/Jaggery.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/jdk/nashorn/internal/objects/annotations/Property.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="39" column="18" selection-start="1657" selection-end="1657" vertical-scroll-proportion="0.22709924">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///usr/lib/jvm/java-8-oracle/jre/lib/ext/nashorn.jar!/jdk/nashorn/internal/objects/annotations/Where.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="4" selection-start="194" selection-end="194" vertical-scroll-proportion="0.17175573" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/jdk/nashorn/internal/objects/annotations/Where.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="30" column="12" selection-start="1339" selection-end="1339" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///usr/lib/jvm/java-8-oracle/jre/lib/ext/nashorn.jar!/jdk/nashorn/internal/objects/annotations/Attribute.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="8" selection-start="291" selection-end="291" vertical-scroll-proportion="0.2576336" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/jdk/nashorn/internal/objects/annotations/Attribute.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="32" column="17" selection-start="1438" selection-end="1438" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Dilan/Jaggery.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="0" selection-start="16" selection-end="16" vertical-scroll-proportion="0.05703422">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Dilan/JaggeryContextify.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="45" column="43" selection-start="1611" selection-end="1611" vertical-scroll-proportion="0.0">
+        <state line="54" column="25" selection-start="1886" selection-end="1886" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Dilan/Jaggery2.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="112" column="0" selection-start="3654" selection-end="3654" vertical-scroll-proportion="0.33333334">
+        <state line="67" column="79" selection-start="2202" selection-end="2202" vertical-scroll-proportion="0.0">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Dilan/JaggeryObj.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="109" column="69" selection-start="3459" selection-end="3459" vertical-scroll-proportion="2.338403">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

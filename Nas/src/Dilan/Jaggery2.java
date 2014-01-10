@@ -67,7 +67,7 @@ public class Jaggery2 {
         }
 
         private Object getModule(){
-            this.builtinMath = initConstructor("");
+            this.builtinMath = initConstructor("Obj");
             this.math = this.builtinMath;
             return math;
         }

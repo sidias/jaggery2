@@ -39,7 +39,7 @@ public class JaggeryContextify extends ScriptObject {
      *
      * @return script function
      */
-    @Function(attributes = Attribute.NOT_ENUMERABLE,  where = Where.CONSTRUCTOR)
+    @Function(attributes = Attribute.CONSTANT,  where = Where.CONSTRUCTOR)
     public static Object isContext(final Object self, final Object x) {
         return UNDEFINED;
         //tru ScriptObject.isOfContext() method;
@@ -49,9 +49,10 @@ public class JaggeryContextify extends ScriptObject {
     * make Context implementation
     * */
     private static Object makeContextImpl() {
-        builtinMakeContext = (ScriptFunction)initConstructor("MakeContextImpl");
+        /*builtinMakeContext = (ScriptFunction)initConstructor("MakeContextImpl");
         make_Context = builtinMakeContext;
-        return make_Context;
+        return make_Context; */
+        return UNDEFINED;
     }
 
     /*

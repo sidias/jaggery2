@@ -44,7 +44,9 @@ public final class JaggeryContextifyScriptImpl extends ScriptObject {
     public static Object constructor(final boolean newObj, final Object self, final Object... value) {
 
         if (newObj) {
+
             final int arglength = value.length;
+            assert (arglength > 0 && arglength <= 2) : "parameter insufficient";
             final boolean hasArgs = ( arglength > 0 );
 
             final Object code = (arglength == 2) ? value[1] : UNDEFINED;
