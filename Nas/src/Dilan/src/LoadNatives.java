@@ -1,13 +1,12 @@
-package Dilan;
+package Dilan.src;
 //this process is need to happen with the startup of the engine.initializing globals.
 
 //when adding new core module to the source this file must be updated.
+import Dilan.Jaggery2;
 import jdk.nashorn.internal.runtime.*;
 
 import static jdk.nashorn.internal.runtime.ScriptRuntime.UNDEFINED;
 
-import java.io.File;
-import java.io.IOException;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.util.*;
@@ -18,7 +17,8 @@ public class LoadNatives extends ScriptObject{
 
     //store all native module's source codes;
     private static final PropertyMap map$;
-    private final HashMap<Object, Object> propertySet ;    //get data from read file
+    private final HashMap<Object, Object> propertySet = Jaggery2.sourceString() ;    //use another workround.
+    //private final ScriptObject proto;
 
     private static final MethodHandle GET_CACHE = findOwnMH("getCache", Object.class,Object.class);
     private static final MethodHandle GET_DEBUGGER = findOwnMH("getDebugger", Object.class,Object.class);
@@ -34,25 +34,24 @@ public class LoadNatives extends ScriptObject{
 
         final ArrayList<Property> properties = new ArrayList<>();
 
-        properties.add(AccessorProperty.create("cache", Property.NOT_ENUMERABLE, GET_CACHE, null));
-        properties.add(AccessorProperty.create("debugger", Property.NOT_ENUMERABLE, GET_DEBUGGER, null));
-        properties.add(AccessorProperty.create("fs", Property.NOT_ENUMERABLE, GET_FS, null));
-        properties.add(AccessorProperty.create("module", Property.NOT_ENUMERABLE, GET_MODULE, null));
+        //set property flag to Property.WRITABLE_ENUMERABLE_CONFIGURABLE
+        properties.add(AccessorProperty.create("cache", Property.WRITABLE_ENUMERABLE_CONFIGURABLE, GET_CACHE, null));
+        properties.add(AccessorProperty.create("debugger", Property.WRITABLE_ENUMERABLE_CONFIGURABLE, GET_DEBUGGER, null));
+        properties.add(AccessorProperty.create("fs", Property.WRITABLE_ENUMERABLE_CONFIGURABLE, GET_FS, null));
+        properties.add(AccessorProperty.create("module", Property.WRITABLE_ENUMERABLE_CONFIGURABLE, GET_MODULE, null));
         properties.add(AccessorProperty.create("path", Property.WRITABLE_ENUMERABLE_CONFIGURABLE, GET_PATH, null));
-        properties.add(AccessorProperty.create("querystring", Property.NOT_ENUMERABLE, GET_QUERYSTRING, null));
-        properties.add(AccessorProperty.create("uri", Property.NOT_ENUMERABLE, GET_URI, null));
-        properties.add(AccessorProperty.create("util", Property.NOT_ENUMERABLE, GET_UTIL, null));
-        properties.add(AccessorProperty.create("vm", Property.NOT_ENUMERABLE, GET_VM, null));
+        properties.add(AccessorProperty.create("querystring", Property.WRITABLE_ENUMERABLE_CONFIGURABLE, GET_QUERYSTRING, null));
+        properties.add(AccessorProperty.create("uri", Property.WRITABLE_ENUMERABLE_CONFIGURABLE, GET_URI, null));
+        properties.add(AccessorProperty.create("util", Property.WRITABLE_ENUMERABLE_CONFIGURABLE, GET_UTIL, null));
+        properties.add(AccessorProperty.create("vm", Property.WRITABLE_ENUMERABLE_CONFIGURABLE, GET_VM, null));
 
         map$ = PropertyMap.newMap(properties);
     }
 
+    public LoadNatives() {
 
-    public LoadNatives() throws IOException {
         super(map$);
-        ReadSource r = new ReadSource();
-        propertySet = r.SourceString();
-
+        //this.setProto(proto);
     }
 
     static PropertyMap getInitialMap() {
@@ -62,7 +61,7 @@ public class LoadNatives extends ScriptObject{
 
     static Object getCache(final Object self){
         return (self instanceof LoadNatives) ?
-                ((LoadNatives)self).getCache("cache") :
+                ((LoadNatives)self).getModule("cache") :
                 UNDEFINED;
     }
 

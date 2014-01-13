@@ -1,38 +1,47 @@
-package Dilan;
+/*plesase ignor this class
+* implemented in jaggery2 as readCore method*/
 
+/*package Dilan;
+//delete this class;
 import jdk.nashorn.internal.runtime.Source;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.String;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
 
 public class ReadSource {
 
+    //make volatile
     final private HashMap<Object, Object> property = new HashMap<>();
 
 
     public ReadSource() throws IOException {
         readCore();
-        System.out.print("in readcore : "+property.size());
     }
 
-    public HashMap<Object, Object> SourceString(){
+    public HashMap<Object, Object> sourceString(){
         return property;
     }
 
     public void readCore() throws IOException {
 
-        File file = new File("/home/buddhi/IdeaProjects/Jaggery2.0/libs/path.js");
+        /*final StringBuilder libPath = new StringBuilder(currDir);
+        libPath.append("");//append lib path from current dir
 
+        File libDir = new File(libPath.toString());
+        if( !libDir.exists() || !libDir.isDirectory()){
+            //throw an error.
+            return;
+        }
 
-        //this thing is complete.find a way around to read all js file in the directory
-        Source source = new Source(file.getName(), file);
-
-        //String sourceContent = source.getString();
-          String sourceContent = "exports.name = 12; exports.age = function(){print('hello buddhi')}";
-
-        property.put("path",sourceContent);
+        final File[] jsFile = libDir.listFiles();
+        for(final File js : jsFile){
+            if( !js.isFile() &&  !js.getName().endsWith(".js")){
+                continue;
+            }
+            Source jsSource = new Source(js.getName(), js);
+            property.put(js.getName() ,jsSource.getString());
+        }
     }
-}
+}       */
