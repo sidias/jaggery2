@@ -1,12 +1,15 @@
-package Dilan.src;
+package Dilan;
 //this process is need to happen with the startup of the engine.initializing globals.
 
 //when adding new core module to the source this file must be updated.
-import Dilan.Jaggery2;
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import jdk.nashorn.internal.runtime.*;
+import jdk.nashorn.internal.runtime.arrays.ArrayIndex;
 
 import static jdk.nashorn.internal.runtime.ScriptRuntime.UNDEFINED;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.util.*;

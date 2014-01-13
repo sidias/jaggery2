@@ -1,7 +1,9 @@
 package Dilan;
 
-import jdk.nashorn.internal.objects.annotations.Attribute;
-import jdk.nashorn.internal.runtime.*;
+import jdk.nashorn.internal.runtime.PropertyMap;
+import jdk.nashorn.internal.runtime.AccessorProperty;
+import jdk.nashorn.internal.runtime.ScriptObject;
+import jdk.nashorn.internal.runtime.Property;
 
 import java.io.IOException;
 import java.lang.invoke.MethodHandle;
@@ -29,10 +31,7 @@ public class Jaggery2 {
     private static final class JaggeryPro extends ScriptObject {
 
         private static PropertyMap $nasgenmap$;
-     //----------------------------------------
-        public volatile Object math;
-        private ScriptObject   builtinMath;
-     //---------------------------------------
+
         JaggeryPro(){
             super($nasgenmap$);
         }
@@ -67,16 +66,11 @@ public class Jaggery2 {
         }
 
         private Object getModule(){
-            this.builtinMath = initConstructor("Obj");
-            this.math = this.builtinMath;
-            return math;
+            return 1;
         }
 
         private Object getBind(){
-            //return new BindImpl();
-            this.builtinMath      = initConstructor("Natives");
-            this.math              = this.builtinMath;
-            return math;
+            return new BindImpl();
         }
 
         private static MethodHandle findOwnMH(final String name, final Class<?> rtype, final Class<?>... types) {
@@ -110,24 +104,4 @@ public class Jaggery2 {
             property.put(js.getName() ,jsSource.getString());
         } */
     }
-
-    private static ScriptObject initConstructor(final String name) {
-        try {
-            // Assuming class name pattern for built-in JS constructors.
-            final StringBuilder sb = new StringBuilder("Dilan.");
-
-            sb.append("Jaggery");
-            sb.append(name);
-            sb.append("$Constructor");
-
-            final Class<?>     funcClass = Class.forName(sb.toString());
-            final ScriptObject res       = (ScriptObject)funcClass.newInstance();
-
-            return res;
-
-        } catch (final ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
 }

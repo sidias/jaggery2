@@ -25,7 +25,7 @@
 
 //
 
-package Dilan.src;
+package Dilan;
 
 //we must set a prototype to this function
 //these classes cannot inherite from scriptObjectMirror class (no default constructror, constructor is pack private)
@@ -62,7 +62,7 @@ public final class ContextifyImpl {
     }
 
 
-    private static final class MakeContext extends JSObject {
+    private static final class MakeContext extends JSObject{
 
         private static PropertyMap maps$;
         private static String CLASSNAME = "MakeContext";
@@ -224,6 +224,23 @@ public final class ContextifyImpl {
 
             final ScriptFunction func = context.compileScript(new Source("filename",trimCode.toString()), global);
             //file name must be the filename stored in the js object in the pro('natives');
+            try {
+                Class<?> proto = Class.forName("jdk.nashorn.internal.objects.PrototypeObject");
+                Constructor<?> constructor = proto.getDeclaredConstructor();
+                constructor.setAccessible(true);
+                func.setProto((ScriptObject) constructor.newInstance(func));
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (InstantiationException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+
 
             if(func == null || errors.getNumberOfErrors() != 0 ){
                 //sent javascript error to the output

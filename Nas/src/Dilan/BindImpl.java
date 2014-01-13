@@ -1,4 +1,4 @@
-package Dilan.src;
+package Dilan;
 
 import jdk.nashorn.api.scripting.JSObject;
 import jdk.nashorn.internal.runtime.*;
@@ -8,7 +8,7 @@ import static jdk.nashorn.internal.runtime.ScriptRuntime.UNDEFINED;
 
 public class BindImpl extends JSObject {
 
-    private static String CLASSNAME = "BIND";
+    private static String CLASSNAME = "bind";
 
     @Override
     public Object call(String s, Object... objects) {
