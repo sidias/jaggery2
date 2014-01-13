@@ -11,7 +11,7 @@ import java.io.IOException;
 
 import static jdk.nashorn.internal.runtime.ScriptRuntime.UNDEFINED;
 
-@ScriptClass("JagObj")
+@ScriptClass("JaggeryObj")
 public class JaggeryObj extends ScriptObject {
 
     public volatile static Object natives;
@@ -59,7 +59,7 @@ public class JaggeryObj extends ScriptObject {
      *
      * @return Javascript Object of relevant binding
      */
-    @Function(attributes = Attribute.NOT_ENUMERABLE, where = Where.CONSTRUCTOR)
+    @Function(attributes = Attribute.CONSTANT, where = Where.CONSTRUCTOR)
     public static Object bind(final Object self, final Object value) {
         final boolean hasArgs = value != null;
         final String key = hasArgs ? (String)value : null;
@@ -153,7 +153,6 @@ public class JaggeryObj extends ScriptObject {
 
     private static ScriptObject initConstructor(final String name) {
         try {
-            // Assuming class name pattern for built-in JS constructors.
             final StringBuilder sb = new StringBuilder("Dilan.");
 
             sb.append("Jaggery");

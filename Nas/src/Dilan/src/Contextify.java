@@ -45,7 +45,7 @@ public final class Contextify extends ScriptObject{
     }
 
     public Contextify(){
-        super(maps$);
+        //super(maps$);
     }
 
     public volatile Object _boolean;

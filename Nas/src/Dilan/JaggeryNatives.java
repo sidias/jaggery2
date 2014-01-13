@@ -3,16 +3,9 @@ package Dilan;
 
 import jdk.nashorn.internal.objects.annotations.*;
 import jdk.nashorn.internal.runtime.*;
-import jdk.nashorn.internal.runtime.Property;
-import jdk.nashorn.internal.runtime.arrays.ArrayData;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
-import static jdk.nashorn.internal.lookup.Lookup.MH;
 import static jdk.nashorn.internal.runtime.ScriptRuntime.UNDEFINED;
 
 @ScriptClass("Natives")
@@ -65,7 +58,9 @@ public class JaggeryNatives extends ScriptObject {
     }
 
     private static Object getModule(final String moduleName){
-        propertySet.put("path","hi");
+        String paths = "exports.name = 45; exports.age = function(){print('my age is 23')}";
+        propertySet.put("path", paths);
         return propertySet.containsKey(moduleName) ? propertySet.get(moduleName) : UNDEFINED;
     }
+
 }
