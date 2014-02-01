@@ -130,7 +130,7 @@ function isNull(obj){
 }
 
 function isFunction(func){
-    return (typeof === 'function') ? true : false;
+    return (typeof func === 'function') ? true : false;
 }
 
 function error(){

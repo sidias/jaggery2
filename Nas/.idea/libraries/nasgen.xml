@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="nasgen">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/buildtools/nasgen/dist/nasgen.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

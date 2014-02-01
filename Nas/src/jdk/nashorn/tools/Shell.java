@@ -25,6 +25,8 @@
 
 package jdk.nashorn.tools;
 
+import Dilan.Jaggery2;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -37,11 +39,13 @@ import java.io.PrintWriter;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 import jdk.nashorn.api.scripting.NashornException;
 import jdk.nashorn.internal.codegen.Compiler;
 import jdk.nashorn.internal.ir.FunctionNode;
 import jdk.nashorn.internal.ir.debug.ASTWriter;
 import jdk.nashorn.internal.ir.debug.PrintVisitor;
+import jdk.nashorn.internal.objects.annotations.Attribute;
 import jdk.nashorn.internal.parser.Parser;
 import jdk.nashorn.internal.runtime.Context;
 import jdk.nashorn.internal.runtime.ErrorManager;
@@ -149,6 +153,8 @@ public class Shell {
         }
 
         final ScriptObject global = context.createGlobal();
+        //add this line when jaggery start up.create a new shell file in your jaggery file.
+        global.addOwnProperty("jaggery", Attribute.DEFAULT_ATTRIBUTES, Jaggery2.getJagGlobal());
         final ScriptEnvironment env = context.getEnv();
 
         final List<String> files = env.getFiles();

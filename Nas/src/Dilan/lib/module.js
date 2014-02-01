@@ -1,396 +1,425 @@
-/*
-module 1k module folder 1n delete karoth cache 1n delte karala danna
-foo
-*/
+/* <mindful>
+ 	1.) warning
+             do not use objName.hasOwnProperty
+    2.) get all the known core modules using JagNative
+ */
 
-//this module loading system works for user write modules only,
-        /*there are two module system
-            1.load jaggery native moudles
-                (when jaggery call var sourced = Pro.binding('core_modules') jaggery send javascript object filled with key value pairs
-                 key is moduleName and value is string represntation of the source )
+//reference to Native func in scr/jaggery.js
+var JagNative = require('natives');
+var path = JagNative.require('path');
+//var util = require('util');
 
-            2.load user wrote modules to the context
-                thee are multiple places that user can put there own modules.jaggery go to those loacations and load those files.
-        */
+var platform = jaggery.platform;
+var pathSep = (platform == 'Linux') ? '/' : '';
 
+//wrapper use when compiling.
+Module.wrapper = JagNative.wrapper;
 
-var fs = require('fs');
-var CoreModule = require('core_module');
-
-function hasOwnProperty(object, property){
-    Object.prototype.hasOwnProperty.call(object, property)
+function hasOwnProperty(obj, prop) {
+	return Object.prototype.hasOwnProperty.call(obj, prop);
 }
 
-Module.initPath();// init all paths to search modules
-
-function Module(id, parent){
-    this.id = id;
-    this.parent = parent;
-    this.exports = {};
-
-    if(parent && parent.children){
-        parent.children.push(this);
-    }
-
-    this.children = [];
-    this.loaded = false;
+//path status
+function statsPath(path) {
+	var fs = JagNative.require('fs');
+	//file relate task may throw error;
+	try {
+		return fs.statPath(path); //{return object}
+	} catch(err) {
+		throw err;
+	}
 }
 
+function Module(id, parent) {
+	this.id = id;
+	this.fileName = null;
+	this.exports = {};
+	this.parent = parent;
+	this.loaded = false;
+}
+
+//Module can be call as a function wherever is required;
+//use to call runMain through src/jaggery.js
 module.exports = Module;
 
-Module._pathCache = {}; //eg requestpath:abs_path_of_requestpath
-Module.moduleCache = {};
+//fullyPathCache is stored in a object user requirePath as a key against absolutePath of that user requirePath
+Module.fullyPathCache = {};
+Module.module_cache = {};
 Module.extensions = {};
-var modulePaths = [];
 
-Module.wrap = CoreModule.wrap;
-Module.wrapper = CoreModule.wrapper;
-
-//find if there are package.json file.if not load index.jag or index.js
 var packageCache = {};
 
-/*this function will find package read once and cache it.it is confirm that file will read only once*/
-/*before it confirm that there is a package.json file*/
+Module.extensions = ['.js','json']; //insert .jag
 
-//*************************complete*****************************
-function readPackage(requestPath){
+/*Module.extensions['jag'] = function() {
 
-    if(hasOwnProperty(this.packageCache, requestPath)){
-        return packageCache[requestPath];
-    }
+} */
 
-    try{
-        var packagePath = path.resolvePath(requestPath,'package.json'); // path class will be called
-        json_content = fs.read(packagePath, "utf8"); //this is a method from java class.use apache io.utils
-    }catch(e){
-      return false;
-    }
+/*
+ * read package.json file in given path
+ * param -> package - package.json content;
+ * */
+function readPackage(absPath) {
 
-    try{
-    // convert json into javascript object(JSON.parse())
-        var package = packageCache[requestPath] = JSON.parse(json_content);
-    }catch(e){
-        e.path = requestPath;
-        e.message = 'ERROR PARSING JSON :' + e.path;
-        throw e;
-    }
-    return package;
- }
+	var mainPath = '';
+	var package = tryPackage(absPath);
 
-//****************************completed***********************************
-//main can be include js or jag file so we pass extension as a parameter
-function tryPackage(requestPath, extension){
+	if (package) {
+		try {
+			var pack = JSON.parse(package);
 
-    var package = readPackage(requestPath);
+			//cache parsed package.
+			packageCache[absPath] = package;
+			var main = pack.main /*'./index'*/;
 
-    if(!package || !package.main){
-        return false;
-    }
+			if (main) {
+				var mainModulePath = path.resolve(absPath, main);
 
-    var mainModulePath = path.resolve(requestPath, package.main);
-    return tryFile(mainModulePath) || tryExtensions(mainModulePath, extension); //hello can be a dir name then what should you do
-    //extensions are check because main can be "main":"lib/hello" without extension. hello file can be .js or .jag file.
-    //this main module must be a jag or js file.(.json is not allow here)
-    //in this extension file don't send .json as an extension.
+				//baseName of the mainModlePath
+				var mainModule_base = path.baseName(mainModulePath);
+
+				//check if (package.json).main has valid extension
+				if(path.extName(mainModule_base)) {
+					mainPath = tryFile(mainModulePath, null);     // if package.json mention main not available returns false
+				} else {
+					mainPath = tryExtensions(mainModulePath);
+				}
+
+				if(!mainPath) {
+					throw new Error('file mention in (pacakge.json).main could not found');
+				}
+				return mainPath;
+
+			} else {
+				throw new Error('no valid main module mention in (pacakge.json).main')
+			}
+		} catch (error) {
+			throw error;
+		}
+	}
+
+	//search for index.jag or index.js
+	var index = tryExtensions([absPath, 'index'].join(pathSep));
+	return index;   //may be false
+};
+
+/*
+ * find if package.json exists
+ * */
+function tryPackage(absPath) {
+
+	if (hasOwnProperty(packageCache, absPath)) {
+		return packageCache[absPath];
+	}
+
+	var packagePath = [absPath, 'package.json'].join(pathSep);
+	//inside dir
+	//check if package.json exists before read
+	var has_pkg = tryFile(packagePath, null);;
+
+	if(has_pkg) {
+		var fs = require('fs');
+		var pkg = fs.readFile(packagePath);
+		if (pkg) {
+			return pkg;
+		}
+	}
+	return false;   //if this func return false try to read index.jag or index.js   */
+};
+
+//read the file from given path
+/*
+* if path is a js file statpath will return path with extension name
+* if path is a dir statpath will return path without extension
+* */
+function tryFile(filePath, realRequest) {
+
+	var absPath;
+    if(realRequest  != null) {
+		var pathToJoin = [filePath, realRequest];
+		absPath = pathToJoin.join(pathSep);
+	} else {
+		absPath = filePath;
+	}
+
+	var statpath = statsPath(absPath);
+	return statpath.isPathExists;
+};
+
+//try given filepath with all extensions
+//wrong here. check which try extension is using there are two try extensions
+function tryExtensions(absPath) {
+
+	var ext = ['.js'];//Object.keys(Module.extensions);
+	var extLength = ext.length;
+
+	for (var i = 0; i < extLength; i++) {
+		var file = tryFile(absPath + ext[i], null);
+		if (file) {
+			return file;
+		}
+	}
+	return false;
+};
+
+Module.findPath = function (realRequest, paths) {
+
+	/*check user gives fileName extension or not
+	 if extension is not given we have to check for .js and .jag
+	 */
+	var fileName = path.baseName(realRequest);
+	if(!Array.isArray(paths)) {
+
+		var extension = path.extName(fileName);
+
+		//require('foo') foo don't have extension. so this if will be skipped if passed as 'foo'.because foo has no extension.
+		if (extension) {
+			return tryFile(paths, null);
+		} else {
+			//if no extension first search for single.js file. if not found looks for folderModule
+			var ext = tryExtensions(paths);
+
+			if(ext) {
+				return ext;
+			}
+
+			var folderModule = tryFile(paths, null);
+			if(folderModule) {
+				var mainSource = readPackage(folderModule);
+				return mainSource;
+			}
+			return false;
+		}
+	} else {  //fill this if not normal files will do the same stuff.
+		//search in jaggery_module folders
+		var jaggeryModulePaths = paths;
+		var file = '', fileParts = '';
+
+		//change this method firs .js file then folder
+		for (var i = 0; i < jaggeryModulePaths.length; i++) { 					//real request --> eg : foo
+
+			//first we try to get fileName.js file.if not then looks for folder as module
+			fileParts = [jaggeryModulePaths[i], fileName]
+			file = tryExtensions(fileParts.join(pathSep));
+
+			if(file) {
+				return file;
+				break;    //--------------------------no break need here
+			}
+
+			//file is a dir(without extension).read package.json and get mainModule/index path
+			file = tryFile(jaggeryModulePaths[i], fileName);
+			if(file) {
+			   	var mainSource = readPackage(file);
+				return mainSource;
+			}
+		}
+		return false;
+	}
+};
+
+/*
+ * param   request - module;
+ *         parent - parent module request this module.
+ *         (param parent use to resolve the relative path)
+ *
+ *         if module is core module it will not be cached into Module.module_cache obj
+ *         it will be cached into Native._cache obj in jaggery.js
+ * */
+Module._load = function (request, parent) {
+
+	//in this point module path is resolved to it's absolute path;
+	//check file exist in given dir
+	var filePath = Module.resolveFileName(request, parent);
+			print('filepath is '+ filePath);
+
+	//if request module is a jaggery core module resolveFileName func return coreModuleName;
+	var cacheModule = hasOwnProperty(Module.module_cache, filePath);
+	if (cacheModule) {
+		var module = Module.module_cache[filePath];
+		return module.exports;
+	}
+
+	//if module exists cache it
+	if (filePath) {
+		//cache fullPath if not cached
+		//guarantee to cache full path at the first time if module was not cached
+		if(!hasOwnProperty(Module.fullyPathCache, request)) {
+			Module.fullyPathCache[request] = filePath;
+		}
+
+		var f_letter = filePath.charAt(0);
+		//return to check if core modules(resolveFileName return module name only if module is a core,otherwise return
+		// string path beginning with / regarding to module);
+		if( f_letter !== '/') {
+
+			//no need to cache require will return cache module if exists;
+
+			//Module.resolveFileName returns single string if required module is a core module
+			//guarantee to call if module is a cored module.
+			return JagNative.require(filePath);
+		}
+
+		//found the targeted file, main is a absolute path to the main js file
+		//create a module and compile it and send module.exports
+		var module = new Module(filePath, parent);
+		module.load(filePath);
+
+		//read the file and compile it and return exports
+		return module.exports;		//create a module and compile it and send module.exports
+
+	} else {
+		var error = new Error('requested module ' + request + ' not found ');
+		throw error;
+	}
+};
+
+//send resolve filename
+//module can be as following
+/*can be  	1.require(foo) - foo can be core module or module inside jaggery_module folder
+ 			3../foo(with,without extension)
+ 			4.../../foo(with,without extension)
+ 			5.abs path(with,without extension)
+ */
+Module.resolveFileName = function (request, parent) {
+
+	//check path cache
+	if (hasOwnProperty(Module.fullyPathCache, request)) {
+		return Module.fullyPathCache[request];
+	}
+
+	//check for core modules in src/lib
+	if (JagNative.source_exists(request)) {
+		return request;
+	}
+
+	//set ./ of ../ or ../jag_module/moduleName paths to check
+	var resolvedPaths = Module.resolvePaths(request, parent);
+	var requests = resolvedPaths[0];
+	var pathsToSearch = resolvedPaths[1];
+
+	//use findPath method to see if this file exists
+	var filePath = Module.findPath(requests, pathsToSearch);
+	if (filePath) {
+		return filePath;
+	}
+	return false;
+};
+
+//set all possible paths to check.
+Module.resolvePaths = function (request, parent) {
+
+	//if request is abs
+	if(path.isAbsolutePath(request)) {
+		return [request, request];
+	}
+
+	//guarantee request like ./ or ../ only reach here(require('foo') will be skipped)
+	var start = request.slice(0, 2);
+	if (start === '..' || start === './') {
+
+	//at the start up parent is null user need to send abs path to work jaggery
+	//assume parent path is a abs path because parent module is a already created module.
+		if (parent != null) {
+
+			var parentPaths = parent.fileName;
+			var childPath = path.resolve(parentPaths, request);
+
+			return [request, childPath];
+		}
+		//if parent is null
+		return [request, path.resolve(jaggery.cwd, request)];
+	}
+
+	//if require('foo') is not a core module and lay inside jaggery_module folder
+	//assume parent is a fully resolved path; cwd may null with first startup;(runMain pass null);
+	var jagmod_paths = Module.jagModulePaths(childPath);
+	//jagmod_paths is an array
+
+	return [request, jagmod_paths];
+};
+
+/*jaggery_module folder paths
+ * param -> absPath - absolute path of the module
+*/
+Module.jagModulePaths = function (request) {
+
+	//guarantee that path is normalized absolute path
+	//var absPath = path.resolve(jaggery.cwd,request);
+	var absPath = jaggery.cwd
+	var modulePaths = [];
+	var splitPath = absPath.split(pathSep);
+	splitPath.shift();
+
+	var p = '';
+	for (var i = 0; i < splitPath.length; i++) {  //use pathsep instead
+		p = p + '/' + splitPath[i];
+		modulePaths.unshift(p + '/jaggery_module');
+	}
+	return modulePaths;
+};
+
+//add more stuff.
+Module.prototype.load = function (absPath) {
+
+	//fill newly created module object with data
+	this.fileName = absPath;
+	//read the content of file;
+	var content = require('fs').readFile(this.fileName);
+	    print('content of this file is ))))))\n'+content);
+
+	//compiled the source and fill module.exports object;
+	this.compile(content, this.fileName);
+};
+
+Module.prototype.compile = function(content, fileName) {
+	var self = this;
+
+	//param - required path
+	function require(path) {
+		self.require(path);
+	}
+
+	/*if developer want to expose more functionalists to the scriptEnvironment. bind them as static methods to
+	'require' function*/
+
+	//wrapped content ;
+	var wrapped_content = Module.wrapper[0] + content + Module.wrapper[1];
+
+	//function(exports, require, module, fileName)
+
+	var Script = jaggery.bind('contextify').contextifyScript;
+ 	var fn = new Script(this.fileName, wrapped_content);
+ 	fn(this.exports, require, this, this.fileName);
+
+ //cache module after compiled
+ 	Module.module_cache[fileName] = this;
+ };
+
+//instance property of Module object.use to load module to this module
+Module.prototype.require = function (request) {
+
+	Module._load(request, this);
+	return this.exports;
+};
+
+function stripBOM(content) {
+
+	if (content.charCodeAt(0) === 0xFEFF) {
+		content = content.slice(1);
+	}
+	return content;
 }
 
-//***************************completed*********************************
-  //this current dir need to be absolute.otherwise split won't work
-function jaggery_modulePaths(currDir){
+ /* starting point
+ * */
+Module.Main = function () {
+	print('main call');
+	var fs = Module._load(/*jaggery.files[0]*/'buddhi', null);   //return {};
+	print(fs.isAbsolutePath('./foo/buddhi.js'));
+};
 
-    var absPath = path.resolve(currDir);
-    var pathsToLook = [];
 
-    var parts = absPath.split('/'/*path.sep*/); /*eg - [home,buddhi,Desktop,foo]  */
-    //windows waladi c://kiyala ena nisa eka poddak balanna.
 
-    var path = '';
 
-//loop will stop at when i =1 because i =0 canot be occour. index 0 is home dir.
-    for(var i = parts.length-1; i > 0; i--){
-
-        if(parts[i] === 'jaggery_module'){
-            continue;
-            //don't search inside jaggery_module/jaggery_module folder.
-        }
-
-        absPath = parts.slice(0, i+1);
-        path = absPath.concat("jaggery_module").join(pathsep);
-        pathsToLook.push(path);
-
-    }
-    return pathsToLook;
-    /*
-    sequence is,
-    /home/buddhi/Desktop/my/jaggery_module
-    /home/buddhi/Desktop/jaggery_module
-    /home/buddhi/jaggery_module
-    home/jaggery_module
-    */
-}
-
-//*******************************************************************not completed****************************************************
-function tryFile(requestPath){
-
-     if(dir){
-        return DIR;
-     }
-
-     if(){  //if file 1 exist and not a directory then return
-        return absPath     //sometimes it may no need of nio
-     }
-     return false;
-
-}
-//***********************completed************************************
-//given path will check with given extension
-function tryExtensions(requestPath, extension){
-    //all extension need to search will pass to extension param.
-    var el = extension.length;
-    for(var k= 0 ; k < el; i++ ){
-        var file = tryFile(requestPath.concat(extension[k]));
-    }
-
-    if(file){
-        return file;
-    }
-    return false;
-}
-
-
-//cashing path so in the compile method i can directly call that path and read file.
-//this path is predefined path may be  from node global folder
-
-//*************************completed*********************************************
-//take the guessed path if they really exists
-Module.findPath = function(request, paths){
-/*this request is not a dir namei. if 'module is a module as a folder' you send foo/bar --> bar is a module folder name.you are inside
-that module folder name*/
-
-     //paths set 1th cache karanna onada
-    
-    if(Module._pathCache.hasOwnProperty(request)){  //request can be ./foo path cache has abs path name of that path
-        return Module._pathCache[request];
-    }
-
-    var dir_path = paths;
-    var resolvePath;
-
-/*in posix systems if there is a trailing slash that mean there are sub folders inside that directory.if not that is a file*/
-    var trailingSlash = (request.slice(-1) === '/');    //true or false
-
-    var extensions = Object.keys(Module.extensions);
-
-    if(request.charAt(0) == '/'){
-        //that mean absolute path in posix
-        dir_path =  [''];
-    }
-
-    //for each directory search will be taken in following sequence
-    /*
-    symbolic link
-    .js file
-    package.json
-    index.jag or index.js
-    */
-
-    //file is the absolute path to the file.
-    var file;
-    for(var i = 0 ; i < dir_Path.length-1; i--){  //send every global paths here jaggery_globle
-        resolvePath = path.resolve(dri_path[i], request);
-
-        if(!trailingSlash){
-            file = tryFile(resolvePath);    //in try file if it is a dir go inside that dir and search until that file find.
-
-            if(!file && !trailingSlash){
-                file = tryExtension(resolvePath, extensions);
-            }
-        }
-           
-        if(!file){
-            file = tryPackage(resolvePath);
-        }
-
-        if(!file){
-            tryExtensions(path.resolve(resolvePath +
-            ,'index'), extensions);  //eg - tryFile(index.jag or index.js)
-        }
-
-        if(file){
-            Module._pathCache[request] = file;          //--------------------------------do i need to use something like cache key
-        }
-    }
-      return false;
-}
-
-//**************************partially completed***********************
-//guess the paths
-Module.lookupPaths = function(request, parent){
-
-    if(NativeModule.exists(request)){
-        return request;
-    }
-
-    var begin = request.substring(0,2);
-    if(begin !== '..' || begin !== './'){
-
-    //this can be /home/dd/gd/afaf of foo + parent samaga kalla(e kiaynne meyawa illannee thawa module 1kin)
-
-//foo kiyala awoth resolve karanna ona methanain.find path 1 ta  yanne just paths tika vitharai.ewa jaggery_module da nathda kiyala wadak na
-        var paths = modulePaths; // module path contain place to look from home dir
-        if(parent){
-            if(!parent.paths){
-                parent.paths = [];
-            }
-                paths = parent.paths.concat(paths);
-        /*modules that are require by parent must be in paths relavent to parent's path.so her
-        what we do is we add jaggery_module paths relevant to the parent and add global paths if
-        to search if require path not found from jaggery_module folder.*/
-        }
-        return paths;
-    }
-
-    //situation can be require('./foo') of (../foo)
-    if(parent || parent.id || parent.filename){
-        //var _dir = parent.id = parent.filename;
-        var basepath = path.basename(parent.filename);
-        paths.put(path.resolve(path.dirname(parent.filename), request));
-
-        //go and search in global folder set by init path moduel
-        //if module cannot be found in jaggery_module folder it will look for global module folder.
-        return paths;
-    }
-
-    /*follow scenario can be happen when we require from console
-    in command line we cannot mention parent we just type var k = require(fs)
-    there is no parent module require this fs module*/
-
-//(parent rahitha kella,meyawa illane command line 1n)
-
-//**************not completed************************
-    paths = Module.jaggery_modulePaths('.')
-    return paths;
-}
-
-//this func is responsible for load all module.load module and keep the js text file in a javascript object
-//module can be  a single file. but above func load them all.
-
-//command line argument is not yet implemented.
-//**************************completed*****************************
-Module.load = function(request, parent){
-
-    var filename = lookupPaths(request, parent);//if not return null else return abs path
-    //file name is the abs path
-                                                // no file name nam exception 1k gahala udinma nawathwanawa
-    var cacheModule = Module.moduleCache[filename]; //garantee that module name is get
-    if(cacheModule){
-        return cacheModule.exports;
-    }
-
-    //then load if in the native module.cache is faster than loading native modules.native modules also cache in module.cache
-    //then how we read this native modules
-    if(NativeModule.exists(filename)){
-        return NativeModule.getSource(filename).exports; //or this can be nativemodule.require(id); //id is fully resolved file name
-                                                           //if no native module exist it return error
-    }
-
-    //if not in native modules or if not in cache then the module is loading in first time load module in regular way
-    var module = new Module(request, parent);
-
-    //ismain module is skipped**********************
-
-    try{
-        module.newLoad(filename);   //error can happen while loading
-        module.loaded = true;
-
-        if(module.loaded){
-            Module.moduleCache[filename] = module;
-        }
-    }catch(e){
-        if(!module.loaded){
-            throw new Error(e.message);
-        }
-    }
-    return module.exports;
-}
- //***********************completed*********************
-//this function is used to load a module from starting point
-Module.prototype.newLoad = function(filename){
-///gurantee that filename is a abs path
-
-    this.filename = filename;    //because this is the abs path of this module
-    this.paths = Module.jaggery_modulePaths(path.dirname(filename));
-
-    //exte only can be .js or .jag. .json cannot be module type
-    var exte = path.extname(filename);
-    if(!Module.extension[exte]){
-        //try to load module with added extensions(jag or js)(eg:require(/home/buddhi/Desktop/foo/bar) like in common js)
-        exte = ['.js', '.jag'];
-        filename = tryExtensions(filename, exte);
-        exte = path.extename(path.basepath(filename));
-        this.loaded = true;
-    }
-
-    Module.extension[exte](this, filename);   ///this function will read and execute the file
-
-}
-
-//********************completed********************
-Module.resolveFileName = function(request, parent){
-
-    if(NativeModule.exist(request)){
-        return request;
-    }
-
-    var paths = lookupPaths(request, parent);
-    var file = findPath(request, paths);
-
-    if(file){
-        return file;
-    }
-    throw new Error('Requested module not found ' + request);
-}
-
-//read file with relavent extensions.
-Module.extensions['.js'] = function(filename, module){
-    var content = NativeModule.require('fs').readFile(filename, 'utf8'); //read file using apache commaon io
-    module.compile();
-}
-
-Module.extensions['.json'] = function(filename, module){
-    var content = NativeModule.require('fs').readFile(filename, 'utf8');
-    module.compile();
-}
-
-Module.extensions['.jag'] = function(filename, module){
-    var content = NativeModule.require('fs').readFile(filename, 'utf8');
-    module.compile();
-}
-
-//this method help to compile any kind of extension type
-Module.compile = function(){
-
-
-}
-
-
-
-//mulin balanna ona paths tika unshift kara kara issarahata yawanna.
-
-//in this function set all the paths you want to search for module including global paths.
-Module.initPath = function(requestPath){
-    //get user currdir based on windows or ubuntu. you can get those from process.getenv.home
-    var home = Process.getenv.HOME;
-
-    var paths = [path.resolve(home, )];    //put global path where all modules are in
-
-    paths.unshift(path.resolve(home,'jaggery_module'));
-
-    modulePaths = paths;
-}
-
-//check weather in common io utils bom is needed.if need use it
-Module.resolveBOM = function(content){
-//use this method to understand which endian is using(unicode)
-}
 

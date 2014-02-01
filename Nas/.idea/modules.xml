@@ -3,6 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Nas.iml" filepath="$PROJECT_DIR$/Nas.iml" />
+      <module fileurl="file://$PROJECT_DIR$/docs/docs.iml" filepath="$PROJECT_DIR$/docs/docs.iml" />
+      <module fileurl="file://$PROJECT_DIR$/buildtools/nasgen/nasgen.iml" filepath="$PROJECT_DIR$/buildtools/nasgen/nasgen.iml" />
+      <module fileurl="file://$PROJECT_DIR$/test/test.iml" filepath="$PROJECT_DIR$/test/test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tools/tools.iml" filepath="$PROJECT_DIR$/tools/tools.iml" />
     </modules>
   </component>
 </project>

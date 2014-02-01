@@ -1,81 +1,92 @@
+/*
+* jaggery.js source file is executed by src/Dilan?Jaggery2
+* */
+
 //function process(jaggeryObj){
 
-    function start(){
+function start() {
 
-        var jags = jag.caches;
+	function hasOwnProperty(obj, prop) {
+		return Object.prototype.hasOwnProperty.call(obj, prop);
+	}
+	/*
+	 * only .js files are accepted;
+	 * */
+	function Native(id) {
+		this.id = id;
+		this.fileName = id + '.js';
+		this.exports = {};
+	};
 
-        /*
-        * only .js files are accepted;
-        * */
-        function JagNative(id){
-            this.id = id;
-            this.fileName = id + 'js';
-            this.exports = {};
-        };
+	//source codes wrapped as strings
+	Native._source = jaggery.bind('natives');
+	Native._cache = {};
 
-        //source codes wrapped as strings
-        JagNative._source = jags.bind('natives');
-        JagNative._cache = {};
+	Native.require = function (id) {
+		if (id == 'natives') {
+			return Native;
+		}
 
-        JagNative.require = function(id) {
-            if(id == 'natives'){
-                return JagNative;
-            }
+		var hasCache = Native.cache_exists(id);
+		if (hasCache) {
+			var cached = Native.getCache(id);
+			return cached.exports;
+		}
 
-            var hasCache = JagNative.cache_exists(id);
+		var jagModule = new Native(id);
+		jagModule.compile();
 
-            if(hasCache) {
-                return JagNative.getCache(id);
-            }
+		//cache the compiled object
+		jagModule.cache();
 
-            var jagModule = new JagNative(id);
-            jagModule.compile();
+		return jagModule.exports;
+	}
 
-            return jagModule.exports;
-        }
+	//compile wrapped content of core .js files
+	Native.prototype.compile = function () {
 
-        JagNative.prototype.compile = function(){
+		var script = jaggery.bind('contextify').contextifyScript;
+		var fn = new script(this.fileName, Native.wrap(this.id));
+		fn(this.exports, Native.require, this, this.fileName);
+	};
 
-            var script = jags.bind('contextify').contextifyScript;
-            var fn = new script(this.fileName, JagNative.wrap(this.id));
-            fn(this.exports, JagNative.require, this, this.fileName);
+	Native.wrapper = ['function(exports, require, module, fileName) {\n',
+		'\n}'];
 
-            //cache the compiled object
-            this.cache();
-        };
+	Native.wrap = function (id) {
+		return Native.wrapper[0] + Native.getSource(id) + Native.wrapper[1];
+	};
 
-        JagNative.wrapper = ['function(exports, require, module, fileName) {\n', '\n}'];
+	Native.getSource = function (id) {
+		if (Native.source_exists(id)) {
+			return Native._source[id];
+		}
+	};
 
-        JagNative.wrap = function(id){
-            return JagNative.wrapper[0] + JagNative.getSource(id) + JagNative.wrapper[1];
-        };
+	Native.getCache = function (id) {
+		return Native._cache[id];
+	}
 
-        JagNative.getSource = function(id) {
-            if(JagNative.source_exists(id)) {
-                return JagNative._source[id];
-            }
-            return undefined; //correct or not
-        };
+	Native.source_exists = function (id) {
+		return hasOwnProperty(Native._source, id);
+	};
 
-        JagNative.getCache = function(id) {
-            return JagNative._cache[id];
-        }
+	//cache existences check
+	Native.cache_exists = function (id) {
+		return hasOwnProperty(Native._cache, id);
+	};
 
-        JagNative.source_exists = function(id) {
-            return Object.prototype.hasOwnProperty.call(JagNative._source, id);
-        };
+	//cache the module
+	Native.prototype.cache = function () {
+		Native._cache[this.id] = this;
+	};
 
-        JagNative.cache_exists = function(id) {
-            return Object.prototype.hasOwnProperty.call(JagNative._cache, id);
-        };
 
-        JagNative.prototype.cache = function(){
-            JagNative._cache[this.id] = this;
-        };
-
-        var foo = JagNative.require('path');
-        print(foo.name);
-    }
-    start();
-    //
+	//test
+	var module = Native.require('module');
+	//calling static method Module.Main inside module.js
+	module.Main();
+}
+start();
+//
 //}

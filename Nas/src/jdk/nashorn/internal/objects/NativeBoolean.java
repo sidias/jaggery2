@@ -67,12 +67,10 @@ public final class NativeBoolean extends ScriptObject {
 
     NativeBoolean(final boolean flag, final Global global) {
         this(flag, global.getBooleanPrototype(), global.getBooleanMap());
-
     }
 
     NativeBoolean(final boolean flag) {
         this(flag, Global.instance());
-
     }
 
     @Override
@@ -138,7 +136,6 @@ public final class NativeBoolean extends ScriptObject {
      */
     @Constructor(arity = 1)
     public static Object constructor(final boolean newObj, final Object self, final Object value) {
-
         final boolean flag = JSType.toBoolean(value);
 
         if (newObj) {
