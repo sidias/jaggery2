@@ -23,6 +23,7 @@ function start() {
 	Native._cache = {};
 
 	Native.require = function (id) {
+
 		if (id == 'natives') {
 			return Native;
 		}
@@ -34,6 +35,7 @@ function start() {
 		}
 
 		var jagModule = new Native(id);
+
 		jagModule.compile();
 
 		//cache the compiled object

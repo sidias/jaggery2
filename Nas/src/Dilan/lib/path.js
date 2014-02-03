@@ -34,6 +34,7 @@ function splits(path) {
 	return paths;
 };
 
+//normalize given path
 function normalizedPath(parts, abs) {
 
 	//this func take care of ./ and ../
@@ -185,12 +186,11 @@ exports.baseName = function (request, ext) {
 };
 
 exports.dirName = function (request) {
-	var result = splitReg(request),
+	var result = splits(request),
 		root = result[0],
 		dir = result[1];
 
 	if (!root && !dir) {
-		// No dirname whatsoever
 		return '.';
 	}
 
@@ -225,8 +225,4 @@ exports.isAbsolutePath = function(path) {
 exports.getRoot = function (request) {
 	var result = splitReg(request);
 	return result[0];
-};
-
-exports.startsWith = function () {
-	//check wether this path start with a given path
 };
