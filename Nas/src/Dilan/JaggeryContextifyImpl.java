@@ -28,49 +28,57 @@
 package Dilan;
 
 //we must set a prototype to this function
-//these classes cannot inherite from scriptObjectMirror class (no default constructror, constructor is pack private)
-
 import jdk.nashorn.api.scripting.JSObject;
 import jdk.nashorn.api.scripting.NashornException;
+import jdk.nashorn.internal.objects.Global;
 import jdk.nashorn.internal.objects.PrototypeObject;
 import jdk.nashorn.internal.objects.annotations.Attribute;
 import jdk.nashorn.internal.runtime.*;
+import jdk.nashorn.internal.runtime.Context;
 import jdk.nashorn.internal.runtime.options.Options;
 
+import javax.naming.*;
+import javax.naming.event.ObjectChangeListener;
+import java.io.IOException;
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 
 import static jdk.nashorn.internal.runtime.ScriptRuntime.UNDEFINED;
 
 
 public final class JaggeryContextifyImpl {
 
-    public Object getMethod(final String method){
+    public static Object getMethod(final String method){
         Object methodObject = null;
         switch (method){
             case "isContext":
                 methodObject =  new IsContext();
                 break;
 
-            case "makeContext" :
-                methodObject = new MakeContext();
+            case "runInNewContext" :
+                methodObject = new RunInNewContext();
                 break;
 
             case "contextifyScript" :
                 methodObject = new ContextifyScript();
+                break;
+
+            case "compileScript" :
+                methodObject = new CompileScript();
+                break;
+
+            case "runScript" :
+                methodObject = new RunScript();
+                break;
         }
         return methodObject;
     }
 
+    private static final class RunInNewContext extends JSObject{
 
-    private static final class MakeContext extends JSObject{
-
-        private static PropertyMap maps$;
-        private static String CLASSNAME = "MakeContext";
-
-        static PropertyMap getInitialMap() {
-            return maps$;
-        }
+        private static String CLASSNAME = "RunInNewContext";
 
         @Override
         public Object call(String s, Object... objects) {
@@ -80,13 +88,43 @@ public final class JaggeryContextifyImpl {
 
         @Override
         public Object newObject(String s, Object... objects) {
-            //create new context and return it
-            //don't allow to create multiple context;
-            final ErrorManager errors = new ErrorManager();
-            final Options option = new Options("nashorn");
-            final Context context = new Context(option, errors, Thread.currentThread().getContextClassLoader());
 
-            return context;
+            Object function = UNDEFINED;
+            final int argLength = objects.length;
+            final boolean hasArgs = (argLength <= 2);
+
+            if(!hasArgs){
+                //handle exeception here
+            }
+
+            final Object code = (hasArgs) ? ((objects[1] instanceof ConsString) ? (ConsString)objects[1] :
+                    (String)objects[1]) : UNDEFINED;
+
+            final Object fileName = (hasArgs) ? ((objects[0] instanceof ConsString) ? (ConsString)objects[0] :
+                    (String)objects[0]) : UNDEFINED;
+
+            final Context context = Context.getContext();
+            final ScriptObject newGlobal = context.createGlobal();
+            final ErrorManager errorManager = context.getErrorManager();
+
+            final ScriptFunction func = context.compileScript(new Source(fileName.toString(),code.toString()), newGlobal);
+
+            if(func == null || errorManager.getNumberOfErrors() != 0 ){
+                //sent javascript error to the output
+            }
+
+            try{
+                function = ScriptRuntime.apply(func, newGlobal);
+            } catch (final NashornException e){
+                errorManager.error(e.toString());
+                if(context.getEnv()._dump_on_error){
+                    e.printStackTrace(context.getErr());
+                }
+            } finally {
+                context.getOut().flush();
+                context.getErr().flush();
+            }
+            return function;
         }
 
         @Override
@@ -122,34 +160,18 @@ public final class JaggeryContextifyImpl {
 
     private static final class IsContext extends JSObject{
 
-        private static PropertyMap maps$;
         private final String CLASSNAME = "IsContext";
-
-        static PropertyMap getInitialMap() {
-            return maps$;
-        }
 
         @Override
         public Object call(String s, Object... objects) {
-            ErrorManager warning = new ErrorManager();
-            warning.warning("WARNING <JAGGERY> : " + CLASSNAME + " must call as a Constructor");
-
-            return warning;
+            final int argLength = objects.length;
+            final boolean hasArgs = (argLength == 2);
+            return null;
         }
 
         @Override
         public Object newObject(String s, Object... objects) {
-            final int arglength =  objects.length;
-            final boolean hasArgs = arglength > 0 ;
-
-            if(!hasArgs){
-                //throw error
-                System.out.print("sandbox must be a object");
-            }
-        //this or following approch is good.
-            final Object sandbox = objects[0];
-            return 4;
-
+            return null;
         }
 
         @Override
@@ -185,12 +207,7 @@ public final class JaggeryContextifyImpl {
 
     private static final class ContextifyScript extends JSObject{
 
-        private static PropertyMap maps$;
         private final String CLASSNAME = "ContextifyScript";
-
-        static PropertyMap getInitialMap() {
-            return maps$;
-        }
 
         @Override
         public Object call(String s, Object... objects) {
@@ -204,18 +221,14 @@ public final class JaggeryContextifyImpl {
         @Override
         public Object newObject(final String s, final Object... objects) {
             //only two parameters code and option
-
             final int arglength = objects.length;
-            final boolean hasArgs = arglength > 0 ;
-            if(hasArgs) {
-                final Object fileName = (objects[0] instanceof ConsString) ? (ConsString)objects[0] : (String)objects[0];
-            }else {
-                //return type error
-                System.out.print("less parameters");
+            final boolean hasArgs = arglength <= 2 ;
+            if(!hasArgs) {
+               //handle exeception here
             }
 
             final Object code = hasArgs ? objects[1] : UNDEFINED;
-      //---- check what happen if really no args.
+            //check what happen if really no args.
 
             Object trimCode = (code instanceof ConsString) ? (ConsString)code :  (String)code;
 
@@ -224,12 +237,12 @@ public final class JaggeryContextifyImpl {
 
             // code.toString == '(function (exports, require, module, __filename, __dirname) { });  */
             //remember to use ; end of this function otherwise it will throw an error.
-            Object function = null;
+            Object function = UNDEFINED;
 
             //get current global and context to execute js file
             Context context = Context.getContext();
             final ScriptObject global = Context.getGlobal();
-            ErrorManager errors = context.getErrorManager();
+            final ErrorManager errors = context.getErrorManager();
 
             final ScriptFunction func = context.compileScript(new Source("",trimCode.toString()), global);
             //file name must be the filename stored in the js object in the pro('natives');
@@ -250,8 +263,136 @@ public final class JaggeryContextifyImpl {
                 context.getErr().flush();
               //check if flush is suitable here;
             }
-
             return function;
+        }
+
+        @Override
+        public Object eval(String s) {
+            return null;
+        }
+
+        @Override
+        public Object getMember(String s) {
+            return null;
+        }
+
+        @Override
+        public Object getSlot(int i) {
+            return null;
+        }
+
+        @Override
+        public void removeMember(String s) {
+
+        }
+
+        @Override
+        public void setMember(String s, Object o) {
+
+        }
+
+        @Override
+        public void setSlot(int i, Object o) {
+
+        }
+    }
+
+    private static final class CompileScript extends JSObject {
+
+        @Override
+        public Object call(String s, Object... objects) {
+
+            final int arglength = objects.length;
+            final boolean hasArgs = arglength >= 3 ;
+            if(!hasArgs) {
+                //handle exeception here
+            }
+
+            Object code = (hasArgs) ? ((objects[2] instanceof ConsString) ? (ConsString)objects[2] :
+                    (String)objects[2]) : UNDEFINED ;
+
+            Context context = Context.getContext();
+            final ScriptObject global = Context.getGlobal();
+            final ScriptFunction func = context.compileScript(new Source("",code.toString()), global);
+
+            return func;
+        }
+
+        @Override
+        public Object newObject(String s, Object... objects) {
+            return null;
+        }
+
+        @Override
+        public Object eval(String s) {
+            return null;
+        }
+
+        @Override
+        public Object getMember(String s) {
+            return null;
+        }
+
+        @Override
+        public Object getSlot(int i) {
+            return null;
+        }
+
+        @Override
+        public void removeMember(String s) {
+
+        }
+
+        @Override
+        public void setMember(String s, Object o) {
+
+        }
+
+        @Override
+        public void setSlot(int i, Object o) {
+
+        }
+    }
+
+    private static final class RunScript extends JSObject {
+
+        @Override
+        public Object call(String s, Object... objects) {
+
+            final int argLength = objects.length;
+            final boolean hasArgs = (argLength >= 2);
+
+            if(!hasArgs) {
+                //handle error
+            }
+            Object param[] = objects;
+            final Object func = (objects[1] instanceof ScriptFunction) ? param[1] : UNDEFINED;
+
+            final Object[] args = (argLength > 2) ? Arrays.copyOfRange(param,2,argLength) : null;
+
+            Object function = UNDEFINED;
+            final Context context = Context.getContext();
+            final ScriptObject global = Context.getGlobal();
+            final ErrorManager eManager = context.getErrorManager();
+
+            try{
+                function = ScriptRuntime.apply((ScriptFunction)func, global, args);
+            } catch (final NashornException e){
+                eManager.error(e.toString());
+                if(context.getEnv()._dump_on_error){
+                    e.printStackTrace(context.getErr());
+                }
+            } finally {
+                context.getOut().flush();
+                context.getErr().flush();
+                //check if flush is suitable here;
+            }
+            return function;
+        }
+
+        @Override
+        public Object newObject(String s, Object... objects) {
+            return null;
         }
 
         @Override

@@ -88,7 +88,7 @@ function readPackage(absPath) {
 				return mainPath;
 
 			} else {
-				throw new Error('no valid main module mention in (pacakge.json).main')
+				throw new Error('no valid main module mention in (package.json).main')
 			}
 		} catch (error) {
 			throw error;
@@ -408,8 +408,51 @@ function stripBOM(content) {
  * */
 Module.Main = function () {
 	print('main call');
-	var fs = Module._load(/*jaggery.files[0]*/'bud', null);   //return {};
-	//print(fs.resolve);
+	var vm = Module._load(/*jaggery.files[0]*/'vm', null);   //return {};
+
+	var compiledScript = vm.compileScript('','function(arg){print(arg)}');
+	var run = vm.runScripts(compiledScript,34);
+	run(35);
+
+	   //========================================================
+//very useful tests in vm testing
+	//var k = vm.runInNewContext('buddhi.js', 'var foo = {age:23}; print(foo.age)')
+	//print(Object.prototype.toString.call(k))    // --- print [Object Undefined]
+	//var foo = {age:23}
+	//var k = vm.runInNewContext('buddhi.js', foo);
+
+
+	/*node's following approch achieve by this way in jaggery
+	 var util = require('util'),
+	 vm = require('vm'),
+	 sandbox = {
+	 animal: 'cat',
+	 count: 2
+	 };
+
+	 vm.runInNewContext('count += 1; name = "kitty"', sandbox, 'myfile.vm');
+
+	 instead of passing sandbox argument you can get a function and then execute that function by given sandbox param as follow
+	*
+	* */
+	/*var k = vm.runInNewContext('buddhi.js', 'function(sandbox){ sandbox.count += 1; sandbox.name = "kitty"};');
+	var sandbox = { animal: "cat",count: 2}
+	k(sandbox);
+	print(sandbox.count); */
+	//print(Object.prototype.toString.call(k))    //-- print [Object Function]
+ ///====================================================================================
+
+	//test for vm.runInThisContext example from node.js
+	/*var localVar = 123,
+		usingscript, evaled,
+
+		usingscript = vm.runInThisContext('myfile.vm','localVar = 1;'
+			);
+	print('localVar: ' + localVar + ', usingscript: ' +
+		usingscript);
+	evaled = eval('localVar = 1;');
+	print('localVar: ' + localVar + ', evaled: ' +
+		evaled); */
 };
 
 

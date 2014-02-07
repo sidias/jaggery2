@@ -3,10 +3,10 @@ function hasOwnProperty(obj, prop){
     Object.prototype.hasOwnproperty.call(obj, prop);
 }
 
-//checked - behave as java.String.format() - right num of argumets must be supplied to work(not like node)
-//find all existance of %s,%j and %d
+//behave as java.String.format() - right num of arguments must be supplied to work
+//find all existences of %s,%j and %d
 var regExp = /%[sdj%]/g;
-function format(){
+function format() {
     var args =  Array.prototype.slice.call(arguments);
     var str = String(args[0]);
 
@@ -16,7 +16,6 @@ function format(){
           objects.push(inspect(arguments[i]));
         }
         return objects.join(' ');
-
       }
 
     var len = args.length;
@@ -75,28 +74,16 @@ function isError(err){
     return (isObject(err) && classType('Error',err));
 }
 
-//check for java.lang.Exception
-function isException(exc){
-    return classType('java.lang.Exception', exc);
-}
-
-
-
 //check given object is in a given class
 //in typeoof operator return null type as object(avoided);
 
 //this approach is the best it will give
-//1.2 === Number and var k = new Number(1.2) both class as Number look javascript garden
+//1.2 === Number and var k = new Number(1.2) both class as Number
 function classType(type, obj){
     var cs = Object.prototype.toString.call(obj);
     return obj !== undefined && obj !== null && cs === type;
 }
 
-function toString(obj){
-    return Object.prototype.toString.call(obj)
-}
-
-//all general purpose constructors checking(Global Objects in js)
 function isArray(e){
     return Array.isArray(e);
 }
@@ -164,7 +151,6 @@ function timestamp(){
 
 function log(msg){
     print(timestamp() + ' - ' + msg);
-    //when format method is finished edit better output with it
 }
 
 //avoid writing code for inheritance
@@ -182,7 +168,6 @@ function inherit(obj){
     	function f(){};
     	f.prototype = obj;
     	return new f();
-
 }
 
 //functions cannot stringify directly.need to convert into string first
@@ -220,16 +205,4 @@ function deserializeJSON(filterString){
 }
 
 
-
-function streamToString(){
-
-}
-
-function readerToString(){
-
-}
-
-function getURL(){
-
-}
 

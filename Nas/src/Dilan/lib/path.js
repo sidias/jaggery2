@@ -26,6 +26,8 @@
  };
  } */
 
+var pathSep = (jaggery.platform === 'Linux') ? '/' : '';
+
 //all methods only for posix systems(otherwise abs path will fail)
 var splitReg = /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
 
@@ -93,6 +95,7 @@ exports.normalize = function (path) {
 	if (trailingSlash) {
 		normal = normal.concat('/');          //change if u can
 	}
+
 	if (!normal) {
 		return false
 	}
@@ -131,7 +134,6 @@ exports.resolve = function () {
 	}));
 
 	if (!isNaN(aIndex)) {
-
 		var resolved = args.slice(aIndex);
 		resolved = resolved.join('/');
 
@@ -169,7 +171,7 @@ exports.relative = function (from, to) {
 	}
 	var relative = toParts.slice(matched);
 
-	//f__length - matche will not be -values
+	//f__length - match will not be -values
 	for (var k = 0; k < f_length - matched; k++) {
 		relative = ['..'].concat(relative);
 	}

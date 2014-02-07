@@ -22,19 +22,22 @@ import static jdk.nashorn.internal.runtime.ScriptRuntime.UNDEFINED;
 public final class JaggeryContextify extends ScriptObject{
 
     private static final PropertyMap maps$;
-    private final JaggeryContextifyImpl jaggeryContextifyImpl;
 
-    private static final MethodHandle MAKE_CONTEXT      = findOwnMH("makeContext", Object.class, Object.class);
-    private static final MethodHandle IS_CONTEXT        = findOwnMH("isContext", Object.class, Object.class);
-    private static final MethodHandle CONTEXTIFY_SCRIPT = findOwnMH("contextifyScript", Object.class, Object.class);
+    private static final MethodHandle RUN_IN_NEW_CONTEXT      = findOwnMH("runInNewContext", Object.class, Object.class);
+    private static final MethodHandle IS_CONTEXT            = findOwnMH("isContext", Object.class, Object.class);
+    private static final MethodHandle CONTEXTIFY_SCRIPT     = findOwnMH("contextifyScript", Object.class, Object.class);
+    private static final MethodHandle COMPILE_SCRIPT        = findOwnMH("compileScript", Object.class, Object.class);
+    private static final MethodHandle RUN_SCRIPT            = findOwnMH("runScripts", Object.class, Object.class);
 
     static {
 
-        final ArrayList<jdk.nashorn.internal.runtime.Property> properties = new ArrayList<>(3);
+        final ArrayList<jdk.nashorn.internal.runtime.Property> properties = new ArrayList<>(4);
 
-        properties.add(AccessorProperty.create("makeContext", Property.WRITABLE_ENUMERABLE_CONFIGURABLE,MAKE_CONTEXT, null));
+        properties.add(AccessorProperty.create("runInNewContext", Property.WRITABLE_ENUMERABLE_CONFIGURABLE,RUN_IN_NEW_CONTEXT, null));
         properties.add(AccessorProperty.create("isContext", Property.WRITABLE_ENUMERABLE_CONFIGURABLE, IS_CONTEXT, null));
         properties.add(AccessorProperty.create("contextifyScript", Property.WRITABLE_ENUMERABLE_CONFIGURABLE, CONTEXTIFY_SCRIPT, null));
+        properties.add(AccessorProperty.create("compileScript", Property.WRITABLE_ENUMERABLE_CONFIGURABLE, COMPILE_SCRIPT, null));
+        properties.add(AccessorProperty.create("runScripts", Property.WRITABLE_ENUMERABLE_CONFIGURABLE, RUN_SCRIPT, null));
 
         maps$ = PropertyMap.newMap(properties);
     }
@@ -45,26 +48,33 @@ public final class JaggeryContextify extends ScriptObject{
 
     public JaggeryContextify(){
         super(maps$);
-        jaggeryContextifyImpl = (JaggeryContextifyImpl)initObject("JaggeryContextifyImpl");
     }
 
 
-    private Object makeContextImpl(){
-        return jaggeryContextifyImpl.getMethod("makeContext");
+    private Object runInNewContextImpl(){
+        return JaggeryContextifyImpl.getMethod("runInNewContext");
     }
 
     private Object isContextImpl(){
-        return jaggeryContextifyImpl.getMethod("isContext");
+        return JaggeryContextifyImpl.getMethod("isContext");
     }
 
     private Object contextifyScriptImpl(){
-        return jaggeryContextifyImpl.getMethod("contextifyScript");
+        return JaggeryContextifyImpl.getMethod("contextifyScript");
+    }
+
+    private Object compileScript() {
+        return JaggeryContextifyImpl.getMethod("compileScript");
+    }
+
+    private Object runScripts() {
+        return JaggeryContextifyImpl.getMethod("runScript");
     }
 
 
-    static Object makeContext(final Object self){
+    static Object runInNewContext(final Object self){
         return (self instanceof JaggeryContextify) ?
-                ((JaggeryContextify)self).makeContextImpl() :
+                ((JaggeryContextify)self).runInNewContextImpl() :
                 UNDEFINED;
     }
 
@@ -80,24 +90,21 @@ public final class JaggeryContextify extends ScriptObject{
                 UNDEFINED;
     }
 
+    static Object compileScript(final Object self) {
+        return (self instanceof JaggeryContextify) ?
+                ((JaggeryContextify)self).compileScript() :
+                UNDEFINED;
+    }
+
+    static Object runScripts(final Object self) {
+        return (self instanceof JaggeryContextify) ?
+                ((JaggeryContextify)self).runScripts() :
+                UNDEFINED;
+    }
+
     @Override
     public String getClassName() {
         return "JaggeryContextify";
-    }
-
-    private static Object initObject(final String name) {
-        try {
-            final StringBuilder sb = new StringBuilder("Dilan.");
-            sb.append(name);
-
-            final Class<?>     funcClass = Class.forName(sb.toString());
-            final Object res = funcClass.newInstance();
-
-            return res;
-
-        } catch (final ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private static MethodHandle findOwnMH(final String name, final Class<?> rtype, final Class<?>... types) {
