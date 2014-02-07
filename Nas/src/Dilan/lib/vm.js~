@@ -1,5 +1,6 @@
 /*
-* we can get out as javascript function and we can get out as a executer,
+* we can get out as javascript function and we can get out as a executer,object 1k function 1 kata pass karala ekata data fill karaganna
+* puluwan,ehenathanm object 1 funtion 1 ta node kelinma deela data fill karagannath hadanna
 * */
 
 var binding = jaggery.bind('contextify');
