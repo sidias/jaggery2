@@ -1,19 +1,25 @@
 var util = require('util');
+var queryString = exports;
 
 function hasOwnProperty(obj, prop) {
-	return Object.prototype.hasOwnProperty.cal(obj, prop);
+	return Object.prototype.hasOwnProperty.call(obj, prop);
 }
 
 function encodes(key) {
 	return encodeURIComponent(key);
 }
 
-function decodes(encodedComp) {
-	return decodeURIComponent(encodedComp);
+function decodes(encodedURI) {
+	return decodeURIComponent(encodedURI);
 };
 
-
-exports.stringify = function(fields, sep, assign) {
+/*Serializes an object containing name:value pairs into a query string:
+@param  fields    object contain URI component as key value pairs.
+@param  separator separator of URIComponent                  [optional, default - &]
+@param  assigner  assigner of key value pairURI Component    [optional, default - =]
+*
+* */
+queryString.stringify = function(fields, sep, assign) {
 	if(!util.isObject(fields)) {
 		throw new Error('fields must be a Object');
 	}
@@ -36,18 +42,50 @@ exports.stringify = function(fields, sep, assign) {
 	}).join(sep);
 };
 
+/*Deserialize a query string to an object
+@param   querystring   querystring as a string to deserialize
+@param   separator     separator of URIComponent      [optional, default - &]
+@param   assign        assigner of key value pair     [optional, default - =]
+* */
 var decodedURI;
 //return a object contain key-value pairs of url value;
-exports.parse = function(querystring, sep, assign) {
+queryString.parse = function(querystring, sep, assign) {
  	if(!util.isString(querystring)) {
 		throw new Error('querystring must be a string')
 	}
 
 	sep = sep || '&';
 	assign = assign || '=';
+    var obj = {},
+        compoArray = [];
 
 	decodedURI = decodes(querystring);
 
+    decodedURI.split(sep).forEach(function(comp) {
+        comp.split(assign).some(function(element, index, array) {
+            if(hasOwnProperty(obj, element.toString())) {
+
+                compoArray.push(obj[element]);
+                compoArray.push(array[1])
+
+                Object.defineProperty(obj, element.toString(), {
+                    enumerable:true,
+                    configurable:true,
+                    writable:true,
+                    value:compoArray
+                });
+            } else {
+                Object.defineProperty(obj, element.toString(), {
+                    enumerable:true,
+                    configurable:true,
+                    writable:true,
+                    value:array[1]
+                });
+            }
+            return true;
+        });
+    });
+    return obj;
 }
 
 function primitiveStringify(val) {
@@ -56,3 +94,8 @@ function primitiveStringify(val) {
 	}
 	return '';
 }
+
+//to do
+queryString.escape = {};
+
+queryString.unescape = {};

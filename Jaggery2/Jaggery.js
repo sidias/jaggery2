@@ -25,7 +25,7 @@ function hasOwnProperty(obj, prop) {
 
 //delete later
 function readCore() {
-	var libPath = new StringBuilder("/home/buddhi/IdeaProjects/Nas/src/Dilan/lib");
+	var libPath = new StringBuilder("/home/buddhi/IdeaProjects/Jaggery2/lib");
 
 	var libDir = new File(libPath.toString());
 	if( !libDir.exists() || !libDir.isDirectory()){

@@ -406,10 +406,12 @@ function stripBOM(content) {
  * */
 Module.Main = function () {
 
-	print('main call');
-	var vm = Module._load(/*jaggery.files[0]*/'querystring', null);   //return {};
-	print(Object.keys(vm))
-	print(vm.stringify({ true: ['¢','groove'], baz:'quux', corge: '' }));
+	print('main class');
+	var querystring = Module._load(/*jaggery.files[0]*/'querystring', null);   //return {};
+    var stringified = querystring.stringify({ foo: 'bar', baz: ['qux', '  quux'], corge: '' });
+	var parsed = querystring.parse(stringified);
+    print(stringified)
+    print(parsed.foo + '*'+ parsed.baz + '*' + parsed.corge);
 	//print(vm.uptime)
 
 
