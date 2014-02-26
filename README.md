@@ -1,3 +1,3 @@
 jaggery2
 ========
-ReInvented version of jaggery2.jaggery two behaves with pure javaScript only.All java classes were written in java were rewritten with javaScript
+Re-invented version of Jaggery2. Jaggery2 behaves with pure JavaScript only. All java classes were rewritten with JavaScript.
