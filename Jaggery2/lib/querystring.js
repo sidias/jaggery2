@@ -70,15 +70,15 @@ queryString.parse = function(querystring, sep, assign) {
 
                 Object.defineProperty(obj, element.toString(), {
                     enumerable:true,
-                    configurable:true,
-                    writable:true,
+                    configurable:false,
+                    writable:false,
                     value:compoArray
                 });
             } else {
                 Object.defineProperty(obj, element.toString(), {
                     enumerable:true,
-                    configurable:true,
-                    writable:true,
+                    configurable:false,
+                    writable:false,
                     value:array[1]
                 });
             }

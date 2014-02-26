@@ -165,6 +165,8 @@ Module.findPath = function (realRequest, paths) {
 	 if extension is not given we have to check for .js and .jag
 	 */
 	var fileName = path.baseName(realRequest);
+    var extension = path.extName(realRequest);
+
 	if(!Array.isArray(paths)) {
 
 		//require('foo') foo don't have extension. so this if will be skipped if passed as 'foo'.because foo has no extension.
@@ -407,12 +409,14 @@ function stripBOM(content) {
 Module.Main = function () {
 
 	print('main class');
-	var querystring = Module._load(/*jaggery.files[0]*/'querystring', null);   //return {};
-    var stringified = querystring.stringify({ foo: 'bar', baz: ['qux', '  quux'], corge: '' });
+	var querystring = Module._load(/*jaggery.files[0]*/'/home/buddhi/Documents/boo', null);   //return {};
+
+
+    /*var stringified = querystring.stringify({ foo: 'bar', baz:'quux', corge: '' });
 	var parsed = querystring.parse(stringified);
     print(stringified)
     print(parsed.foo + '*'+ parsed.baz + '*' + parsed.corge);
-	//print(vm.uptime)
+	//print(vm.uptime)  */
 
 
 	//print(Object.keys(vm));

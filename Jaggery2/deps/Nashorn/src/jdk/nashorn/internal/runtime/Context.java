@@ -34,6 +34,7 @@ import static jdk.nashorn.internal.runtime.ScriptRuntime.UNDEFINED;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.System;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Modifier;
@@ -484,12 +485,14 @@ public final class Context {
      * @throws IOException if source cannot be found or loaded
      */
     public Object load(final ScriptObject scope, final Object from) throws IOException {
+
         final Object src = (from instanceof ConsString)?  from.toString() : from;
         Source source = null;
 
         // load accepts a String (which could be a URL or a file name), a File, a URL
         // or a ScriptObject that has "name" and "source" (string valued) properties.
         if (src instanceof String) {
+
             final String srcStr = (String)src;
             final File file = new File(srcStr);
             if (srcStr.indexOf(':') != -1) {
@@ -678,7 +681,7 @@ public final class Context {
      * execution
      *
      * @param t throwable for which to dump stack
-     */
+
     public static void printStackTrace(final Throwable t) {
         if (Context.DEBUG) {
             t.printStackTrace(Context.getCurrentErr());
@@ -848,6 +851,7 @@ public final class Context {
         if (env._class_cache_size > 0) {
             global = (GlobalObject)Context.getGlobalTrusted();
             script = global.findCachedClass(source);
+
             if (script != null) {
                 Compiler.LOG.fine("Code cache hit for ", source, " avoiding recompile.");
                 return script;

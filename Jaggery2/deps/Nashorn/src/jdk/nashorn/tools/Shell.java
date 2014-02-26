@@ -34,8 +34,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.lang.Object;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import jdk.nashorn.api.scripting.NashornException;
@@ -45,6 +47,7 @@ import jdk.nashorn.internal.ir.debug.ASTWriter;
 import jdk.nashorn.internal.ir.debug.PrintVisitor;
 import jdk.nashorn.internal.objects.annotations.Attribute;
 import jdk.nashorn.internal.parser.Parser;
+import jdk.nashorn.internal.runtime.*;
 import jdk.nashorn.internal.runtime.Context;
 import jdk.nashorn.internal.runtime.ErrorManager;
 import jdk.nashorn.internal.runtime.JSType;
@@ -54,6 +57,7 @@ import jdk.nashorn.internal.runtime.ScriptFunction;
 import jdk.nashorn.internal.runtime.ScriptObject;
 import jdk.nashorn.internal.runtime.ScriptRuntime;
 import jdk.nashorn.internal.runtime.Source;
+import jdk.nashorn.internal.runtime.Undefined;
 import jdk.nashorn.internal.runtime.options.Options;
 
 /**
@@ -401,8 +405,10 @@ public class Shell {
 
             // initialize with "shell.js" script
             try {
+
                 final Source source = new Source("<shell.js>", Shell.class.getResource("resources/shell.js"));
                 context.eval(global, source.getString(), global, "<shell.js>", false);
+
             } catch (final Exception e) {
                 err.println(e);
                 if (env._dump_on_error) {
