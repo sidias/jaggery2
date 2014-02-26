@@ -1,3 +1,0 @@
-SyntaxError: test/script/basic/NASHORN-100.js#32<eval>:1:0 Invalid return statement
-return;
-^

@@ -1,4 +1,3 @@
 jaggery2
-
-Author : Buddhi Nipun Mihara
 ========
+Re-invented version of Jaggery2. Jaggery2 behaves with pure JavaScript only. All java classes were rewritten with JavaScript.
