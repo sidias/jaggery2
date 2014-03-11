@@ -16,6 +16,7 @@ var Runtime			= Java.type('java.lang.Runtime');
 var Scanner			= Java.type('java.util.Scanner');
 var FileInputStream = Java.type('java.io.FileInputStream');
 
+//use javascript object instead of hashmap.
 var property = new HashMap();
 //------------- delete later
 
@@ -190,6 +191,11 @@ var os = {
 };
 
 var load = {
+    /*require will be registered as a global function.
+    * purpose is to give control over module loading system to user via cmd.
+    *
+    * */
+    require : req,
 	jaggery:{
 		bind:function(property) {
 			switch (property) {
@@ -226,7 +232,7 @@ var load = {
 		execPath: "executable path of node",
 		chdir	: function(){}
 	},
-	exit:function() { exit();}
+	exit    : function() { exit();}
 };
 
 //bind jaggery object to current global scope
@@ -311,7 +317,16 @@ Native.prototype.cache = function () {
 	Native._cache[this.id] = this;
 };
 
+/*REPL implementation of jaggery require
+* parameter parent = null(loading from cmd)
+* */
+function req(filePath) {
+    var module = Native.require('module');
+    return module._load(filePath, null);
+}
+
 //test
+
 var module = Native.require('module');
 //calling static method Module.Main inside module.js
 module.Main();
